@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>노센스 투자운세 v1.7</title>
+    <title>노센스 투자운세 v1.8</title>
     <style>
         :root { 
             --page-bg: #f8fafc; 
@@ -22,9 +22,9 @@
             background-color: var(--page-bg); 
             margin: 0; padding: 20px; 
             display: flex; justify-content: center; 
-            align-items: flex-start; /* 상단 정렬 */
+            align-items: flex-start; 
             min-height: 100vh; color: #1e293b;
-            padding-top: 8vh; 
+            padding-top: 5vh; 
         }
 
         .container { 
@@ -45,194 +45,27 @@
         }
         .yt-icon { color: #ff0000; text-decoration: none; }
 
+        /* 모드 선택 탭 */
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+        .tab { 
+            flex: 1; padding: 12px 5px; background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; 
+            font-size: 0.85rem; font-weight: 800; color: var(--text-dim); 
+            cursor: pointer; transition: 0.3s; 
+        }
+        .tab.active { background: var(--primary-accent); color: #fff; border-color: var(--primary-accent); }
+
         /* 입력 폼 */
         .input-form { display: flex; flex-direction: column; gap: 15px; text-align: left; }
         .input-group label { font-size: 0.75rem; color: var(--text-dim); font-weight: 800; margin-left: 5px; margin-bottom: 5px; display: block;}
-        input { 
+        
+        input, select { 
             width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.05); color: #fff; font-size: 1rem; box-sizing: border-box;
         }
-        input:focus { outline: none; border-color: var(--primary-accent); background: rgba(255,255,255,0.1); }
+        input:focus, select:focus { outline: none; border-color: var(--primary-accent); background: rgba(255,255,255,0.1); }
+        select option { background: #1e293b; color: #fff; } /* 드롭다운 메뉴 색상 */
 
         /* 버튼 스타일 */
         .btn-analyze { 
-            background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; border: none;
-            padding: 18px; border-radius: 15px; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; margin-top: 5px; width: 100%; transition: 0.3s;
-        }
-        
-        .btn-grid { display: flex; gap: 10px; margin-top: 0px; }
-        .btn-sub { 
-            flex: 1; background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15);
-            padding: 16px; border-radius: 14px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s;
-        }
-        .btn-sub:hover { background: rgba(255,255,255,0.15); color: #fff; }
-
-        .btn-random {
-            background: transparent; color: var(--text-dim); border: 1px dashed rgba(255, 255, 255, 0.2);
-            padding: 15px; border-radius: 14px; font-weight: 700; font-size: 0.95rem;
-            cursor: pointer; width: 100%; transition: 0.3s; margin-top: 5px;
-        }
-        .btn-random:hover { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.4); }
-
-        /* 결과 화면 */
-        #resultArea { display: none; margin-top: 20px; text-align: left; animation: fadeIn 0.5s ease; }
-        .fortune-card { 
-            background: var(--card-bg); border-radius: 18px; 
-            padding: 22px; margin-bottom: 15px; 
-            border-left: 5px solid var(--primary-accent);
-        }
-        
-        .tag { font-size: 0.75rem; font-weight: 900; display: block; margin-bottom: 8px; color: var(--text-dim); }
-        .content { font-size: 1.05rem; line-height: 1.7; color: #e2e8f0; margin: 0; word-break: keep-all; }
-        
-        .card-invest { border-left-color: var(--invest-red); }
-        .card-lucky { border-left-color: var(--lucky-gold); text-align: center; }
-        .card-quote { border-left-color: var(--quote-purple); background: rgba(167, 139, 250, 0.1); }
-        .quote-text { font-size: 1.2rem; font-weight: 800; color: #ffffff; text-align: center; }
-        
-        .lucky-ball { 
-            background: linear-gradient(135deg, #f59e0b, #ea580c); 
-            width: 60px; height: 60px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            margin: 10px auto 0; font-size: 1.8rem; font-weight: 900; color: #000;
-        }
-
-        .btn-copy { background: #10b981; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; }
-        .btn-reset { background: transparent; color: var(--text-dim); border: none; padding: 10px; cursor: pointer; font-size: 0.9rem; text-decoration: underline; width: 100%; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header">
-        <h1>🔮 노센스 투자운세 v1.7</h1>
-        <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="yt-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
-    </div>
-
-    <div id="inputForm" class="input-form">
-        <div class="input-group">
-            <label>이름 (NAME)</label>
-            <input type="text" id="userName" placeholder="이름을 입력하세요">
-        </div>
-        <div class="input-group">
-            <label>생년월일 (1990년 기본)</label>
-            <input type="date" id="userBirth">
-        </div>
-        
-        <button class="btn-analyze" onclick="startAnalysis('general')">🔮 맞춤 종합운세 분석</button>
-        <div class="btn-grid">
-            <button class="btn-sub" onclick="startAnalysis('zodiac')">🐉 띠별 운세</button>
-            <button class="btn-sub" onclick="startAnalysis('horoscope')">🌟 별자리 운세</button>
-        </div>
-        <button class="btn-random" onclick="startAnalysis('random')">🎲 입력 없이 랜덤으로 보기</button>
-    </div>
-
-    <div id="resultArea">
-        <div class="fortune-card">
-            <span class="tag" id="tagGen">📅 오늘의 종합 컨디션</span>
-            <p id="resGen" class="content"></p>
-        </div>
-        <div class="fortune-card card-invest">
-            <span class="tag">📈 투자 및 재물 전략</span>
-            <p id="resInv" class="content"></p>
-        </div>
-        <div class="fortune-card card-lucky">
-            <span class="tag">✨ 오늘의 행운 숫자</span>
-            <div id="resNum" class="lucky-ball"></div>
-        </div>
-        <div class="fortune-card card-quote">
-            <span class="tag">💬 오늘의 투자 격언</span>
-            <p id="resQuote" class="content quote-text"></p>
-        </div>
-        
-        <button class="btn-copy" onclick="copyData()">리포트 복사하기</button>
-        <button class="btn-reset" onclick="location.reload()">새로 분석하기</button>
-    </div>
-</div>
-
-<script>
-    // 페이지가 열리면 생년월일을 1990년 1월 1일로 고정
-    document.addEventListener('DOMContentLoaded', function() {
-        var birthInput = document.getElementById('userBirth');
-        if (birthInput) birthInput.value = '1990-01-01';
-    });
-
-    const db = {
-        gen: ["주변 사람들과의 협력이 빛을 발하는 날입니다. 혼자 고민하던 문제를 신뢰할 만한 사람에게 털어놓으세요.", "오늘은 정적인 활동보다 동적인 활동이 운을 높여줍니다. 새로운 정보를 수집하거나 활발히 움직이세요.", "내면의 목소리에 집중해야 할 시기입니다. 중요한 결정은 오늘 저녁 혼자만의 시간을 가진 뒤로 미루세요.", "노력해온 일에 대한 작은 보상이 따르는 하루입니다. 스스로를 칭찬해주면 행운이 더 커집니다.", "변화가 찾아올 수 있으나, 이는 더 좋은 방향으로 이끌기 위한 전환점입니다."],
-        inv: ["시장의 소음에서 멀어질 필요가 있습니다. 본인만의 매매 원칙을 다시 한번 점검하세요. 원칙 사수가 수익보다 중요합니다.", "공격적인 투자보다는 방어적인 포트폴리오 관리가 유리합니다. 확실한 타점이 올 때까지 인내심을 갖고 기다리세요.", "오랫동안 분석해온 종목에서 유의미한 신호가 포착됩니다. 데이터에 기반한 판단을 내리세요.", "투자 심리가 매우 안정적입니다. 과거의 실수를 복기하여 자신만의 수익 모델을 정교화하기 좋은 날입니다.", "유행에 휩쓸리지 마세요. 본인이 잘 아는 분야에 집중하는 것이 재물운을 지키는 길입니다."],
-        quotes: ["\"투자의 목적은 옳음을 증명하는 것이 아니라 돈을 버는 것이다.\"", "\"시장은 인내심 없는 사람의 돈을 인내심 있는 사람에게 전달하는 도구다.\"", "\"리스크는 자신이 무엇을 하고 있는지 모르는 데서 온다.\"", "\"살 때가 아니라 팔 때를 아는 것이 진짜 실력이다.\"", "\"남들이 공포에 질려 있을 때 욕심을 내라.\""]
-    };
-
-    // 별자리 계산 함수
-    function getStarSign(m, d) {
-        if ((m == 1 && d >= 20) || (m == 2 && d <= 18)) return "물병자리";
-        if ((m == 2 && d >= 19) || (m == 3 && d <= 20)) return "물고기자리";
-        if ((m == 3 && d >= 21) || (m == 4 && d <= 19)) return "양자리";
-        if ((m == 4 && d >= 20) || (m == 5 && d <= 20)) return "황소자리";
-        if ((m == 5 && d >= 21) || (m == 6 && d <= 21)) return "쌍둥이자리";
-        if ((m == 6 && d >= 22) || (m == 7 && d <= 22)) return "게자리";
-        if ((m == 7 && d >= 23) || (m == 8 && d <= 22)) return "사자자리";
-        if ((m == 8 && d >= 23) || (m == 9 && d <= 22)) return "처녀자리";
-        if ((m == 9 && d >= 23) || (m == 10 && d <= 22)) return "천칭자리";
-        if ((m == 10 && d >= 23) || (m == 11 && d <= 21)) return "전갈자리";
-        if ((m == 11 && d >= 22) || (m == 12 && d <= 21)) return "궁수자리";
-        return "염소자리";
-    }
-
-    function startAnalysis(mode) {
-        const nameInput = document.getElementById('userName');
-        const birthInput = document.getElementById('userBirth');
-        
-        if (mode !== 'random' && (!nameInput.value || !birthInput.value)) {
-            return alert("이름과 생년월일을 모두 입력해주세요.");
-        }
-
-        let seed = 0;
-        let prefixText = "";
-        let tagTitle = "📅 오늘의 종합 컨디션";
-
-        if (mode === 'random') {
-            seed = Math.floor(Math.random() * 100000);
-            if(!nameInput.value) nameInput.value = "익명";
-            tagTitle = "🎲 랜덤 종합 컨디션";
-        } else {
-            const date = new Date(birthInput.value);
-            seed = date.getTime() + new Date().getDate();
-            
-            if (mode === 'zodiac') {
-                const zodiacs = ["원숭이", "닭", "개", "돼지", "쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양"];
-                const z = zodiacs[date.getFullYear() % 12];
-                prefixText = `[${z}띠] `;
-                tagTitle = `🐉 띠별 종합 컨디션`;
-            } else if (mode === 'horoscope') {
-                const star = getStarSign(date.getMonth() + 1, date.getDate());
-                prefixText = `[${star}] `;
-                tagTitle = `🌟 별자리 종합 컨디션`;
-            }
-        }
-
-        // 결과 삽입
-        document.getElementById('tagGen').innerText = tagTitle;
-        document.getElementById('resGen').innerText = prefixText + db.gen[seed % 5];
-        document.getElementById('resInv').innerText = db.inv[(seed + 2) % 5];
-        document.getElementById('resNum').innerText = (seed % 90) + 10;
-        document.getElementById('resQuote').innerText = db.quotes[(seed + 4) % 5];
-
-        // 화면 전환
-        document.getElementById('inputForm').style.display = 'none';
-        document.getElementById('resultArea').style.display = 'block';
-    }
-
-    function copyData() {
-        const name = document.getElementById('userName').value;
-        const t = `[노센스 투자운세]\n👤 대상: ${name}님\n${document.getElementById('tagGen').innerText}: ${document.getElementById('resGen').innerText}\n📈 투자전략: ${document.getElementById('resInv').innerText}\n✨ 행운수: ${document.getElementById('resNum').innerText}\n💬 격언: ${document.getElementById('resQuote').innerText}\n\n👉 확인하기: ${window.location.href}`;
-        navigator.clipboard.writeText(t).then(() => alert("리포트가 복사되었습니다!"));
-    }
-</script>
-</body>
-</html>
+            background: linear-gradient(1
