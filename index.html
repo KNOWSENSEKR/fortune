@@ -6,90 +6,82 @@
     <title>노센스 투자운세 v1.2</title>
     <style>
         :root { 
-            /* 심리적으로 차분하고 부드러운 파스텔 톤 설정 */
-            --bg-light: #fefaf5; /* 부드러운 크림색 배경 */
-            --card-light: #ffffff; /* 깨끗한 흰색 카드 */
-            --primary-purple: #b695da; /* 부드러운 파스텔 라벤더 포인트 */
-            --text-main: #334155; /* 진한 회색 텍스트 (가독성 확보) */
-            --text-dim: #718096; /* 부드러운 회색 설명 텍스트 */
-            --invest-red-soft: #ffb8c5; /* 부드러운 코랄/핑크 */
-            --lucky-gold-soft: #f9e1a3; /* 부드러운 골드 */
-            --quote-purple-soft: #dbccff; /* 부드러운 라벤더 격언 배경 */
+            --bg-calm: #fcfaf7; /* 이미지의 따뜻한 크림색 배경 */
+            --card-white: #ffffff; 
+            --accent-purple: #8e44ad; 
+            --text-main: #2d3436; 
+            --text-sub: #636e72;
+            --border-soft: #f1f2f6;
         }
         
         body { 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            background-color: var(--bg-light); 
+            background-color: var(--bg-calm); 
             margin: 0; padding: 20px; 
-            display: flex; justify-content: center; align-items: center;
+            display: flex; justify-content: center; align-items: flex-start;
             color: var(--text-main); min-height: 100vh;
         }
 
         .container { 
-            width: 100%; max-width: 420px; 
-            background-color: var(--card-light); 
-            border-radius: 28px; padding: 35px; 
-            box-shadow: 0 15px 35px rgba(210, 201, 191, 0.2); /* 부드러운 그림자 */
-            border: 1px solid rgba(210, 201, 191, 0.1);
+            width: 100%; max-width: 440px; 
+            background-color: var(--card-white); 
+            border-radius: 30px; padding: 40px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.03); 
             text-align: center; box-sizing: border-box;
-            position: relative;
+            margin-top: 40px;
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #f1f1f1; padding-bottom: 15px; }
-        h1 { font-size: 1.3rem; margin: 0; color: #8e44ad; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-        .yt-icon { color: #ff0000; text-decoration: none; display: flex; transition: 0.3s; }
-        .yt-icon:hover { transform: scale(1.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .title-area { display: flex; align-items: center; gap: 10px; }
+        h1 { font-size: 1.25rem; margin: 0; color: var(--accent-purple); font-weight: 700; }
+        .yt-icon { color: #ff0000; text-decoration: none; transition: 0.2s; }
+        .yt-icon:hover { opacity: 0.7; }
+
+        .divider { height: 1px; background-color: var(--border-soft); margin-bottom: 30px; }
 
         /* 입력 폼 */
-        .input-form { display: flex; flex-direction: column; gap: 18px; text-align: left; }
-        .input-group label { font-size: 0.8rem; color: var(--text-dim); font-weight: bold; display: block; margin-bottom: 6px; }
+        .input-form { display: flex; flex-direction: column; gap: 20px; text-align: left; }
+        .input-group label { font-size: 0.75rem; color: var(--text-sub); font-weight: 700; letter-spacing: 1px; margin-left: 5px; }
         input { 
-            width: 100%; padding: 16px; border-radius: 14px; border: 2px solid #e2e8f0;
-            background: #f8fafc; color: #1e293b; font-size: 1rem; box-sizing: border-box;
-            transition: 0.3s;
+            width: 100%; padding: 16px; border-radius: 15px; border: 1.5px solid var(--border-soft);
+            background: #fafafa; color: #1e293b; font-size: 1rem; box-sizing: border-box;
+            transition: all 0.3s ease;
         }
-        input:focus { outline: none; border-color: var(--primary-purple); box-shadow: 0 0 0 3px rgba(182, 149, 218, 0.1); }
+        input:focus { outline: none; border-color: var(--accent-purple); background: #fff; }
 
         .btn-analyze { 
-            background: var(--primary-purple); color: white; border: none;
-            padding: 18px; border-radius: 16px; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; margin-top: 10px; width: 100%; transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(182, 149, 218, 0.2);
+            background: var(--accent-purple); color: white; border: none;
+            padding: 18px; border-radius: 15px; font-weight: 700; font-size: 1rem;
+            cursor: pointer; margin-top: 10px; width: 100%; 
+            transition: all 0.3s ease;
         }
-        .btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(182, 149, 218, 0.3); }
-        .btn-analyze:active { transform: translateY(1px) scale(0.98); }
+        .btn-analyze:hover { background: #7d3c98; transform: translateY(-1px); }
 
-        /* 결과 화면 */
-        #resultArea { display: none; margin-top: 25px; text-align: left; animation: fadeIn 0.4s ease; }
+        /* 결과 카드 스타일 */
+        #resultArea { display: none; margin-top: 20px; text-align: left; animation: fadeIn 0.5s ease; }
         .fortune-card { 
-            background: #fdfdfd; border-radius: 20px; 
-            padding: 22px; margin-bottom: 15px; 
-            border: 2px solid #e2e8f0;
-            border-left: 6px solid var(--primary-purple);
+            background: #ffffff; border-radius: 20px; 
+            padding: 25px; margin-bottom: 20px; 
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
         }
-        .tag { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: block; margin-bottom: 10px; text-transform: uppercase; }
-        .content { font-size: 1.1rem; line-height: 1.8; color: var(--text-main); margin: 0; word-break: keep-all; font-weight: 500; }
         
-        /* 각 카드별 포인트 컬러 */
-        .gen-box { border-left-color: #a3daff; }
-        .inv-box { border-left-color: #ffb8c5; }
-        .lucky-box { border-left-color: #f9e1a3; text-align: center; }
-        .quote-box { border-left-color: var(--quote-purple-soft); background: rgba(219, 204, 255, 0.2); }
-        .quote-text { font-size: 1.3rem; font-weight: 800; color: #4c1d95; text-align: center; font-style: italic; }
+        .card-label { font-size: 0.75rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 12px; display: block; opacity: 0.6; }
+        .content { font-size: 1.05rem; line-height: 1.8; color: var(--text-main); margin: 0; word-break: keep-all; font-weight: 400; }
         
+        /* 격언 및 강조 텍스트 */
+        .quote-text { font-size: 1.15rem; font-weight: 700; color: #2d3436; text-align: center; }
+        
+        .lucky-num-area { text-align: center; padding: 10px 0; }
         .lucky-ball { 
-            background: linear-gradient(135deg, #f9e1a3, #f59e0b); 
-            width: 70px; height: 70px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            margin: 15px auto 0; font-size: 2rem; font-weight: 900; color: #333;
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2);
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 60px; height: 60px; background: #fdf1f1; color: #e74c3c;
+            border-radius: 50%; font-size: 1.5rem; font-weight: 900;
         }
 
-        .btn-footer { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
-        .btn-copy { background: #6dd4b3; color: white; border: none; padding: 16px; border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s; }
-        .btn-copy:hover { background: #56c9a2; }
-        .btn-reset { background:#cbd5e1; color:#334155; border:none; padding:14px; border-radius:12px; cursor:pointer; font-weight:bold; font-size:0.95rem; }
-        .btn-reset:hover { background:#b4c3d1; }
+        .btn-footer { display: flex; flex-direction: column; gap: 10px; margin-top: 30px; }
+        .btn-copy { background: #f1f2f6; color: #2d3436; border: none; padding: 15px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .btn-reset { background: transparent; color: var(--text-sub); border: none; padding: 10px; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -98,6 +90,89 @@
 
 <div class="container">
     <div class="header">
-        <h1>🔮 노센스 투자운세 v1.2</h1>
+        <div class="title-area">
+            <h1>🔮 노센스 투자운세 v1.2</h1>
+        </div>
         <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="yt-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+    </div>
+
+    <div class="divider"></div>
+    
+    <div id="inputForm" class="input-form">
+        <div class="input-group">
+            <label>NAME</label>
+            <input type="text" id="userName" placeholder="이름을 입력하세요">
+        </div>
+        <div class="input-group">
+            <label>BIRTHDAY</label>
+            <input type="date" id="userBirth">
+        </div>
+        <button class="btn-analyze" onclick="startAnalysis()">운세 리포트 분석 시작</button>
+    </div>
+
+    <div id="resultArea">
+        <div class="fortune-card">
+            <span class="card-label">TODAY'S CONDITION</span>
+            <p id="resGen" class="content"></p>
+        </div>
+        
+        <div class="fortune-card">
+            <span class="card-label">INVESTMENT STRATEGY</span>
+            <p id="resInv" class="content"></p>
+        </div>
+
+        <div class="fortune-card">
+            <span class="card-label">LUCKY NUMBER</span>
+            <div class="lucky-num-area">
+                <div id="resNum" class="lucky-ball"></div>
+            </div>
+        </div>
+
+        <div class="fortune-card" style="background-color: #fafafa;">
+            <span class="card-label">INVESTMENT QUOTE</span>
+            <p id="resQuote" class="content quote-text"></p>
+        </div>
+        
+        <div class="btn-footer">
+            <button class="btn-copy" onclick="copyData()">결과 복사하기</button>
+            <button class="btn-reset" onclick="location.reload()">새로 분석하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1990년 기본값 설정
+    window.onload = function() {
+        document.getElementById('userBirth').value = '1990-01-01';
+    };
+
+    const db = {
+        gen: ["주변 사람들과의 협력이 빛을 발하는 날입니다. 혼자 고민하던 문제를 신뢰할 만한 사람에게 털어놓으세요.", "오늘은 정적인 활동보다 동적인 활동이 운을 높여줍니다. 새로운 정보를 수집하거나 활발히 움직이세요.", "내면의 목소리에 집중해야 할 시기입니다. 중요한 결정은 오늘 저녁 혼자만의 시간을 가진 뒤로 미루세요.", "노력해온 일에 대한 작은 보상이 따르는 하루입니다. 스스로를 칭찬해주면 행운이 더 커집니다.", "변화가 찾아올 수 있으나, 이는 당신을 더 좋은 방향으로 이끌기 위한 전환점입니다."],
+        inv: ["시장의 소음에서 멀어질 필요가 있습니다. 본인만의 매매 원칙을 다시 한번 점검하세요. 원칙 사수가 수익보다 중요합니다.", "공격적인 투자보다는 방어적인 포트폴리오 관리가 유리합니다. 확실한 타점이 올 때까지 인내심을 갖고 기다리세요.", "오랫동안 분석해온 종목에서 유의미한 신호가 포착됩니다. 데이터에 기반한 판단을 내리세요.", "투자 심리가 매우 안정적입니다. 과거의 실수를 복기하여 자신만의 수익 모델을 정교화하기 좋은 날입니다.", "유행에 휩쓸리지 마세요. 본인이 잘 아는 분야에 집중하는 것이 재물운을 지키는 길입니다."],
+        quotes: ["\"투자의 목적은 옳음을 증명하는 것이 아니라 돈을 버는 것이다.\"", "\"시장은 인내심 없는 사람의 돈을 인내심 있는 사람에게 전달하는 도구다.\"", "\"리스크는 자신이 무엇을 하고 있는지 모르는 데서 온다.\"", "\"살 때가 아니라 팔 때를 아는 것이 진짜 실력이다.\"", "\"남들이 공포에 질려 있을 때 욕심을 내라.\""]
+    };
+
+    function startAnalysis() {
+        const name = document.getElementById('userName').value;
+        const birth = document.getElementById('userBirth').value;
+        if(!name || !birth) return alert("정보를 입력해주세요.");
+
+        const seed = new Date(birth).getTime() + new Date().getDate();
+        document.getElementById('resGen').innerText = db.gen[seed % 5];
+        document.getElementById('resInv').innerText = db.inv[(seed + 2) % 5];
+        document.getElementById('resNum').innerText = (seed % 90) + 10;
+        document.getElementById('resQuote').innerText = db.quotes[(seed + 4) % 5];
+
+        document.getElementById('inputForm').style.display = 'none';
+        document.getElementById('resultArea').style.display = 'block';
+    }
+
+    function copyData() {
+        const t = `[노센스 투자운세]\n📅 종합: ${document.getElementById('resGen').innerText}\n📈 투자: ${document.getElementById('resInv').innerText}\n✨ 행운수: ${document.getElementById('resNum').innerText}\n💬 격언: ${document.getElementById('resQuote').innerText}`;
+        navigator.clipboard.writeText(t).then(() => alert("복사되었습니다!"));
+    }
+</script>
+</body>
+</html>
