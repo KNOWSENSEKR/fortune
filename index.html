@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>노센스 투자운세 v2.0</title>
+    <title>노센스 투자운세 v2.1</title>
     <style>
         :root { 
             --page-bg: #f8fafc; 
@@ -56,6 +56,7 @@
         }
         .yt-icon { color: #ff0000; text-decoration: none; }
 
+        /* 탭 디자인 */
         .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
         .tab { 
             flex: 1; padding: 12px 5px; background: rgba(255,255,255,0.05); 
@@ -70,10 +71,12 @@
         input, select { 
             width: 100%; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.05); color: #fff; font-size: 1.05rem; box-sizing: border-box;
+            font-family: inherit;
         }
         input:focus, select:focus { outline: none; border-color: var(--primary-accent); background: rgba(255,255,255,0.1); }
         select option { background: #1e293b; color: #fff; }
 
+        /* 버튼 디자인 */
         .btn-analyze { 
             background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; border: none;
             padding: 18px; border-radius: 15px; font-weight: 800; font-size: 1.1rem;
@@ -86,6 +89,7 @@
         }
         .btn-random:hover { background: rgba(255, 255, 255, 0.05); color: #fff; border-color: rgba(255, 255, 255, 0.4); }
 
+        /* 결과 화면 디자인 */
         #resultArea { display: none; margin-top: 15px; text-align: left; animation: fadeIn 0.5s ease; }
         .fortune-card { 
             background: var(--card-bg); border-radius: 18px; 
@@ -119,7 +123,7 @@
 <div class="wrapper">
     <div class="container">
         <div class="header">
-            <h1>🔮 노센스 투자운세 v2.0</h1>
+            <h1>🔮 노센스 투자운세 v2.1</h1>
             <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="yt-icon">
                 <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
@@ -127,9 +131,9 @@
 
         <div id="inputForm" class="input-form">
             <div class="tabs">
-                <div class="tab active" onclick="switchMode('birth', this)">📅 생년월일</div>
-                <div class="tab" onclick="switchMode('zodiac', this)">🐉 띠별</div>
-                <div class="tab" onclick="switchMode('star', this)">🌟 별자리</div>
+                <div class="tab active" id="tab-birth" onclick="setMode('birth')">📅 생년월일</div>
+                <div class="tab" id="tab-zodiac" onclick="setMode('zodiac')">🐉 띠별</div>
+                <div class="tab" id="tab-star" onclick="setMode('star')">🌟 별자리</div>
             </div>
 
             <div class="input-group" id="groupBirth">
@@ -170,8 +174,8 @@
                 </select>
             </div>
             
-            <button type="button" class="btn-analyze" onclick="runFortuneApp(false)">🔮 맞춤 운세 분석 시작</button>
-            <button type="button" class="btn-random" onclick="runFortuneApp(true)">🎲 그냥 랜덤으로 바로 보기</button>
+            <button type="button" class="btn-analyze" onclick="executeFortune(false)">🔮 맞춤 운세 분석 시작</button>
+            <button type="button" class="btn-random" onclick="executeFortune(true)">🎲 그냥 랜덤으로 바로 보기</button>
         </div>
 
         <div id="resultArea">
@@ -192,43 +196,109 @@
                 <p id="resQuote" class="content quote-text"></p>
             </div>
             
-            <button type="button" class="btn-copy" onclick="copyData()">리포트 복사하기</button>
+            <button type="button" class="btn-copy" onclick="copyResultText()">리포트 복사하기</button>
             <button type="button" class="btn-reset" onclick="location.reload()">새로 분석하기</button>
         </div>
     </div>
 </div>
 
 <script>
-    let currentMode = 'birth';
+    // 전역 변수 설정
+    window.appMode = 'birth';
 
+    // 기본값 설정 로직
     window.onload = function() {
         var birthInput = document.getElementById('userBirth');
         if (birthInput) birthInput.value = '1990-01-01';
     };
 
-    function switchMode(mode, element) {
-        currentMode = mode;
-        const tabs = document.querySelectorAll('.tab');
-        tabs.forEach(tab => tab.classList.remove('active'));
-        element.classList.add('active');
+    // 탭 전환 함수
+    function setMode(mode) {
+        window.appMode = mode;
+        
+        document.getElementById('tab-birth').classList.remove('active');
+        document.getElementById('tab-zodiac').classList.remove('active');
+        document.getElementById('tab-star').classList.remove('active');
+        
+        document.getElementById('tab-' + mode).classList.add('active');
 
-        document.getElementById('groupBirth').style.display = mode === 'birth' ? 'block' : 'none';
-        document.getElementById('groupZodiac').style.display = mode === 'zodiac' ? 'block' : 'none';
-        document.getElementById('groupStar').style.display = mode === 'star' ? 'block' : 'none';
+        document.getElementById('groupBirth').style.display = 'none';
+        document.getElementById('groupZodiac').style.display = 'none';
+        document.getElementById('groupStar').style.display = 'none';
+
+        if(mode === 'birth') document.getElementById('groupBirth').style.display = 'block';
+        if(mode === 'zodiac') document.getElementById('groupZodiac').style.display = 'block';
+        if(mode === 'star') document.getElementById('groupStar').style.display = 'block';
     }
 
-    const db = {
+    // 운세 데이터베이스
+    const fortuneDB = {
         gen: ["주변 사람들과의 협력이 빛을 발하는 날입니다. 혼자 고민하던 문제를 털어놓으세요.", "오늘은 정적인 활동보다 동적인 활동이 운을 높여줍니다. 활발히 움직이세요.", "내면의 목소리에 집중해야 할 시기입니다. 중요한 결정은 저녁으로 미루세요.", "노력해온 일에 대한 작은 보상이 따르는 하루입니다. 스스로를 칭찬해주세요.", "변화가 찾아올 수 있으나, 이는 더 좋은 방향으로 이끌기 위한 전환점입니다."],
         inv: ["시장의 소음에서 멀어질 필요가 있습니다. 본인만의 매매 원칙을 다시 한번 점검하세요.", "공격적인 투자보다는 방어적인 포트폴리오 관리가 유리합니다. 확실한 타점을 기다리세요.", "오랫동안 분석해온 종목에서 유의미한 신호가 포착됩니다. 데이터에 기반해 판단하세요.", "투자 심리가 매우 안정적입니다. 과거의 실수를 복기하여 수익 모델을 정교화하세요.", "유행에 휩쓸리지 마세요. 본인이 잘 아는 분야에 집중하는 것이 재물운을 지키는 길입니다."],
         quotes: ["\"투자의 목적은 옳음을 증명하는 것이 아니라 돈을 버는 것이다.\"", "\"시장은 인내심 없는 사람의 돈을 인내심 있는 사람에게 전달하는 도구다.\"", "\"리스크는 자신이 무엇을 하고 있는지 모르는 데서 온다.\"", "\"살 때가 아니라 팔 때를 아는 것이 진짜 실력이다.\"", "\"남들이 공포에 질려 있을 때 욕심을 내라.\""]
     };
 
-    function getSeed(str) {
+    // 텍스트 시드 생성 (음수 방지 적용)
+    function generateStringSeed(str) {
         let hash = 0;
         for (let i = 0; i < str.length; i++) hash += str.charCodeAt(i);
-        return hash;
+        return Math.abs(hash);
     }
 
-    // 기능 오작동 방지를 위해 함수명 변경 및 예외 처리 추가
-    function runFortuneApp(isRandom) {
-        try {
+    // 핵심 실행 함수
+    function executeFortune(isRandom) {
+        let rawSeed = 0;
+        let prefixLabel = "";
+        let mainTitle = "📅 오늘의 종합 컨디션";
+        const currentDay = new Date().getDate();
+
+        if (isRandom) {
+            rawSeed = Math.floor(Math.random() * 999999);
+            mainTitle = "🎲 랜덤 종합 컨디션";
+        } else {
+            if (window.appMode === 'birth') {
+                const birthVal = document.getElementById('userBirth').value;
+                if(!birthVal) {
+                    alert("생년월일을 먼저 선택해주세요.");
+                    return;
+                }
+                // 1970년 이전 날짜 연산 시 발생하는 음수 버그 해결을 위해 Math.abs 적용
+                rawSeed = Math.abs(Math.floor(new Date(birthVal).getTime() / 100000));
+                
+            } else if (window.appMode === 'zodiac') {
+                const zVal = document.getElementById('userZodiac').value;
+                prefixLabel = `[${zVal}띠] `;
+                mainTitle = `🐉 띠별 종합 컨디션`;
+                rawSeed = generateStringSeed(zVal);
+                
+            } else if (window.appMode === 'star') {
+                const sVal = document.getElementById('userStar').value;
+                prefixLabel = `[${sVal.split(" ")[0]}] `;
+                mainTitle = `🌟 별자리 종합 컨디션`;
+                rawSeed = generateStringSeed(sVal);
+            }
+        }
+
+        // 일별 변화를 위해 날짜 더하기
+        const finalSeed = rawSeed + currentDay;
+
+        // 결과 화면 출력
+        document.getElementById('tagGen').innerText = mainTitle;
+        document.getElementById('resGen').innerText = prefixLabel + fortuneDB.gen[finalSeed % 5];
+        document.getElementById('resInv').innerText = fortuneDB.inv[(finalSeed + 2) % 5];
+        document.getElementById('resNum').innerText = (finalSeed % 90) + 10;
+        document.getElementById('resQuote').innerText = fortuneDB.quotes[(finalSeed + 4) % 5];
+
+        // 뷰 전환
+        document.getElementById('inputForm').style.display = 'none';
+        document.getElementById('resultArea').style.display = 'block';
+    }
+
+    // 클립보드 복사 함수
+    function copyResultText() {
+        const textToCopy = `[노센스 투자운세 리포트]\n\n${document.getElementById('tagGen').innerText}: ${document.getElementById('resGen').innerText}\n\n📈 투자전략: ${document.getElementById('resInv').innerText}\n\n✨ 행운수: ${document.getElementById('resNum').innerText}\n\n💬 격언: ${document.getElementById('resQuote').innerText}\n\n👉 운세 확인하기: ${window.location.href}`;
+        navigator.clipboard.writeText(textToCopy).then(() => alert("리포트가 성공적으로 복사되었습니다."));
+    }
+</script>
+</body>
+</html>
