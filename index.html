@@ -18,22 +18,25 @@
         
         body { 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            background: var(--bg-dark); 
+            background-color: var(--bg-dark); /* 배경색 강제 지정 */
             margin: 0; 
             display: flex; 
             justify-content: center; 
             padding: 20px; 
             color: var(--text-main); 
+            min-height: 100vh;
         }
 
         .container { 
             width: 100%; 
             max-width: 450px; 
-            background: var(--card-dark); 
+            background-color: var(--card-dark); 
             border-radius: 32px; 
             padding: 30px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 20px;
+            box-sizing: border-box;
         }
 
         .header { 
@@ -52,24 +55,22 @@
             font-weight: 800;
         }
 
-        .youtube-link { color: #ff0000; transition: 0.3s; }
-        .youtube-link:hover { transform: scale(1.1) rotate(5deg); }
+        .youtube-link { color: #ff0000; text-decoration: none; }
 
-        /* 입력 폼 스타일 */
         .input-form { display: flex; flex-direction: column; gap: 15px; }
-        .input-group label { font-size: 0.8rem; color: var(--text-dim); margin-left: 5px; }
+        .input-group { text-align: left; }
+        .input-group label { font-size: 0.8rem; color: var(--text-dim); font-weight: bold; margin-bottom: 5px; display: block; }
+        
         input { 
             width: 100%; 
             padding: 16px; 
-            background: rgba(255,255,255,0.05); 
+            background: rgba(255,255,255,0.08); 
             border: 1px solid rgba(255,255,255,0.1); 
             border-radius: 16px; 
-            color: white; 
+            color: #ffffff; 
             font-size: 1rem; 
             box-sizing: border-box;
-            margin-top: 5px;
         }
-        input:focus { outline: none; border-color: var(--primary-accent); background: rgba(255,255,255,0.08); }
 
         button { 
             padding: 18px; 
@@ -79,37 +80,80 @@
             cursor: pointer; 
             font-size: 1.1rem; 
             transition: 0.3s;
-            margin-top: 10px;
+            width: 100%;
         }
         .btn-main { 
             background: linear-gradient(135deg, #6c5ce7, #a55eea); 
             color: white; 
             box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
+            margin-top: 10px;
         }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(108, 92, 231, 0.4); }
 
-        /* 결과 카드 스타일 */
-        #resultArea { display: none; animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        #resultArea { display: none; margin-top: 25px; animation: fadeIn 0.5s ease; }
+        
         .fortune-card { 
-            background: rgba(255,255,255,0.03); 
+            background: rgba(255,255,255,0.05); 
             border-radius: 20px; 
             padding: 20px; 
             margin-bottom: 15px; 
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.08);
+            text-align: left;
         }
-        .fortune-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
         
-        .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-        .tag { font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
-        
+        .tag { font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; }
         .tag-gen { background: rgba(69, 170, 242, 0.2); color: #45aaf2; }
         .tag-inv { background: rgba(255, 71, 87, 0.2); color: var(--invest-red); }
         .tag-lucky { background: rgba(255, 165, 2, 0.2); color: var(--lucky-gold); }
         .tag-quote { background: rgba(165, 94, 234, 0.2); color: var(--quote-purple); }
 
-        .content { font-size: 1rem; line-height: 1.6; color: #cbd5e1; margin: 0; }
-        .content.highlight { font-size: 1.2rem; font-weight: 800; color: white; text-align: center; }
+        .content { font-size: 1rem; line-height: 1.6; color: #e2e8f0; margin: 0; word-break: keep-all; }
+        .quote-text { font-size: 1.2rem; font-weight: 800; color: #ffffff; text-align: center; }
         
         .lucky-num-ball { 
-            background: linear-gradient(135deg, #ffa502, #ff7f50);
+            background: linear-gradient(135deg, #ffa502, #ff7f50); 
+            width: 60px; height: 60px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            margin: 10px auto; font-size: 1.8rem; font-weight: 900; color: #000;
+        }
+
+        .btn-copy { background: #26de81; color: #004d2e; margin-top: 10px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body onload="setDefaultDate()">
+
+<div class="container">
+    <div class="header">
+        <h1>🔮 노센스 투자운세 v1.1</h1>
+        <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="youtube-link">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+    </div>
+    
+    <div class="input-form" id="inputForm">
+        <div class="input-group">
+            <label>NAME</label>
+            <input type="text" id="userName" placeholder="성함을 입력하세요">
+        </div>
+        <div class="input-group">
+            <label>BIRTHDAY</label>
+            <input type="date" id="userBirth">
+        </div>
+        <button class="btn-main" onclick="calculateFortune()">운세 리포트 분석 시작</button>
+    </div>
+
+    <div id="resultArea">
+        <div class="fortune-card">
+            <span class="tag tag-gen">GENERAL</span>
+            <p class="content" id="generalTxt"></p>
+        </div>
+        <div class="fortune-card">
+            <span class="tag tag-inv">INVESTMENT</span>
+            <p class="content" id="investTxt"></p>
+        </div>
+        <div class="fortune-card">
+            <span class="tag tag-lucky">LUCKY NUMBER</span>
+            <div class="lucky-num-ball" id="luckyNum"></div>
+        </div>
+        <div class="fortune-card" style="border-color: var(--quote-purple
