@@ -3,171 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>노센스 투자운세 v1.1</title>
+    <title>노센스 투자운세 v1.2</title>
     <style>
         :root { 
-            --bg-dark: #0f111a; 
-            --card-dark: #1a1d2e; 
-            --primary-accent: #8e44ad; 
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --invest-red: #ff4757;
-            --lucky-gold: #ffa502;
-            --quote-purple: #a55eea;
+            /* 심리적으로 차분하고 부드러운 파스텔 톤 설정 */
+            --bg-light: #fefaf5; /* 부드러운 크림색 배경 */
+            --card-light: #ffffff; /* 깨끗한 흰색 카드 */
+            --primary-purple: #b695da; /* 부드러운 파스텔 라벤더 포인트 */
+            --text-main: #334155; /* 진한 회색 텍스트 (가독성 확보) */
+            --text-dim: #718096; /* 부드러운 회색 설명 텍스트 */
+            --invest-red-soft: #ffb8c5; /* 부드러운 코랄/핑크 */
+            --lucky-gold-soft: #f9e1a3; /* 부드러운 골드 */
+            --quote-purple-soft: #dbccff; /* 부드러운 라벤더 격언 배경 */
         }
         
         body { 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            background-color: var(--bg-dark); 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            padding: 20px; 
-            color: var(--text-main); 
-            min-height: 100vh;
+            background-color: var(--bg-light); 
+            margin: 0; padding: 20px; 
+            display: flex; justify-content: center; align-items: center;
+            color: var(--text-main); min-height: 100vh;
         }
 
         .container { 
-            width: 100%; 
-            max-width: 450px; 
-            background-color: var(--card-dark); 
-            border-radius: 28px; 
-            padding: 30px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
-            border: 1px solid rgba(255,255,255,0.05);
-            margin-top: 20px;
-            box-sizing: border-box;
-            text-align: center;
+            width: 100%; max-width: 420px; 
+            background-color: var(--card-light); 
+            border-radius: 28px; padding: 35px; 
+            box-shadow: 0 15px 35px rgba(210, 201, 191, 0.2); /* 부드러운 그림자 */
+            border: 1px solid rgba(210, 201, 191, 0.1);
+            text-align: center; box-sizing: border-box;
+            position: relative;
         }
 
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 2rem; 
-        }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #f1f1f1; padding-bottom: 15px; }
+        h1 { font-size: 1.3rem; margin: 0; color: #8e44ad; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .yt-icon { color: #ff0000; text-decoration: none; display: flex; transition: 0.3s; }
+        .yt-icon:hover { transform: scale(1.1); }
 
-        h1 { 
-            font-size: 1.3rem; 
-            margin: 0; 
-            color: #9b59b6;
-            font-weight: 800;
-        }
-
-        .youtube-icon { color: #ff0000; text-decoration: none; font-size: 1.5rem; }
-
-        .input-form { display: flex; flex-direction: column; gap: 20px; text-align: left; }
-        .input-group label { font-size: 0.75rem; color: var(--text-dim); font-weight: bold; display: block; margin-bottom: 8px; }
-        
+        /* 입력 폼 */
+        .input-form { display: flex; flex-direction: column; gap: 18px; text-align: left; }
+        .input-group label { font-size: 0.8rem; color: var(--text-dim); font-weight: bold; display: block; margin-bottom: 6px; }
         input { 
-            width: 100%; 
-            padding: 16px; 
-            background: #ffffff; 
-            border: none; 
-            border-radius: 12px; 
-            color: #000000; 
-            font-size: 1rem; 
-            box-sizing: border-box;
-        }
-
-        button { 
-            padding: 18px; 
-            border: none; 
-            border-radius: 14px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            font-size: 1.1rem; 
+            width: 100%; padding: 16px; border-radius: 14px; border: 2px solid #e2e8f0;
+            background: #f8fafc; color: #1e293b; font-size: 1rem; box-sizing: border-box;
             transition: 0.3s;
-            width: 100%;
         }
+        input:focus { outline: none; border-color: var(--primary-purple); box-shadow: 0 0 0 3px rgba(182, 149, 218, 0.1); }
 
         .btn-analyze { 
-            background: #9b59b6; 
-            color: white; 
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+            background: var(--primary-purple); color: white; border: none;
+            padding: 18px; border-radius: 16px; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; margin-top: 10px; width: 100%; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(182, 149, 218, 0.2);
         }
+        .btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(182, 149, 218, 0.3); }
+        .btn-analyze:active { transform: translateY(1px) scale(0.98); }
 
-        #resultArea { display: none; margin-top: 25px; text-align: left; }
-        
+        /* 결과 화면 */
+        #resultArea { display: none; margin-top: 25px; text-align: left; animation: fadeIn 0.4s ease; }
         .fortune-card { 
-            background: rgba(255,255,255,0.05); 
-            border-radius: 18px; 
-            padding: 20px; 
-            margin-bottom: 15px; 
-            border-left: 5px solid var(--primary-accent);
+            background: #fdfdfd; border-radius: 20px; 
+            padding: 22px; margin-bottom: 15px; 
+            border: 2px solid #e2e8f0;
+            border-left: 6px solid var(--primary-purple);
         }
+        .tag { font-size: 0.8rem; font-weight: 800; color: var(--text-dim); display: block; margin-bottom: 10px; text-transform: uppercase; }
+        .content { font-size: 1.1rem; line-height: 1.8; color: var(--text-main); margin: 0; word-break: keep-all; font-weight: 500; }
         
-        .tag { font-size: 0.75rem; font-weight: 800; color: var(--text-dim); display: block; margin-bottom: 8px; }
-
-        .content { font-size: 1rem; line-height: 1.7; color: #e2e8f0; margin: 0; word-break: keep-all; }
-        .quote-text { font-size: 1.2rem; font-weight: 800; color: #ffffff; text-align: center; }
+        /* 각 카드별 포인트 컬러 */
+        .gen-box { border-left-color: #a3daff; }
+        .inv-box { border-left-color: #ffb8c5; }
+        .lucky-box { border-left-color: #f9e1a3; text-align: center; }
+        .quote-box { border-left-color: var(--quote-purple-soft); background: rgba(219, 204, 255, 0.2); }
+        .quote-text { font-size: 1.3rem; font-weight: 800; color: #4c1d95; text-align: center; font-style: italic; }
         
-        .lucky-num-ball { 
-            background: linear-gradient(135deg, #ffa502, #ff7f50); 
-            width: 60px; height: 60px; border-radius: 50%; 
+        .lucky-ball { 
+            background: linear-gradient(135deg, #f9e1a3, #f59e0b); 
+            width: 70px; height: 70px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
-            margin: 10px auto; font-size: 1.8rem; font-weight: 900; color: #000;
+            margin: 15px auto 0; font-size: 2rem; font-weight: 900; color: #333;
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2);
         }
 
-        .btn-copy { background: #26de81; color: #004d2e; margin-top: 15px; }
+        .btn-footer { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+        .btn-copy { background: #6dd4b3; color: white; border: none; padding: 16px; border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+        .btn-copy:hover { background: #56c9a2; }
+        .btn-reset { background:#cbd5e1; color:#334155; border:none; padding:14px; border-radius:12px; cursor:pointer; font-weight:bold; font-size:0.95rem; }
+        .btn-reset:hover { background:#b4c3d1; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body onload="initApp()">
+<body>
 
 <div class="container">
     <div class="header">
-        <h1>🔮 노센스 투자운세 v1.1</h1>
-        <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="youtube-icon">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
-    </div>
-    
-    <div class="input-form" id="inputForm">
-        <div class="input-group">
-            <label>NAME</label>
-            <input type="text" id="userName" placeholder="성함을 입력하세요">
-        </div>
-        <div class="input-group">
-            <label>BIRTHDAY</label>
-            <input type="date" id="userBirth">
-        </div>
-        <button class="btn-analyze" onclick="calculateFortune()">운세 리포트 분석 시작</button>
-    </div>
-
-    <div id="resultArea">
-        <div class="fortune-card">
-            <span class="tag">GENERAL</span>
-            <p class="content" id="generalTxt"></p>
-        </div>
-        <div class="fortune-card" style="border-left-color: var(--invest-red);">
-            <span class="tag">INVESTMENT</span>
-            <p class="content" id="investTxt"></p>
-        </div>
-        <div class="fortune-card" style="border-left-color: var(--lucky-gold);">
-            <span class="tag">LUCKY NUMBER</span>
-            <div class="lucky-num-ball" id="luckyNum"></div>
-        </div>
-        <div class="fortune-card" style="border-left-color: var(--quote-purple); background: rgba(165, 94, 234, 0.1);">
-            <span class="tag">DAILY QUOTE</span>
-            <p class="content quote-text" id="quoteTxt"></p>
-        </div>
-        
-        <button class="btn-copy" onclick="copyToClipboard()">리포트 복사하기</button>
-        <button onclick="location.reload()" style="background: #334155; color: white; margin-top: 10px;">다시 분석</button>
-    </div>
-</div>
-
-<script>
-    function initApp() {
-        // 기본 연도를 1990년으로 설정
-        document.getElementById('userBirth').value = '1990-01-01';
-    }
-
-    const data = {
-        general: [
-            "주변 사람들과의 협력이 빛을 발하는 날입니다. 혼자 고민하던 문제를 신뢰할 만한 사람에게 털어놓으세요.",
-            "오늘은 정적인 활동보다 동적인 활동이 운을 높여줍니다. 새로운 정보를 수집하거나 활발히 움직이세요.",
-            "내면의 목소리에 집중해야 할 시기입니다
+        <h1>🔮 노센스 투자운세 v1.2</h1>
+        <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="yt-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.
