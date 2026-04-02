@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>노센스 투자운세보기 v1.1</title>
+    <title>노센스 투자운세 v1.1</title>
     <style>
         :root { 
             --bg-dark: #0f111a; 
             --card-dark: #1a1d2e; 
-            --primary-accent: #6c5ce7; 
+            --primary-accent: #8e44ad; 
             --text-main: #ffffff;
             --text-dim: #94a3b8;
             --invest-red: #ff4757;
@@ -18,7 +18,7 @@
         
         body { 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            background-color: var(--bg-dark); /* 배경색 강제 지정 */
+            background-color: var(--bg-dark); 
             margin: 0; 
             display: flex; 
             justify-content: center; 
@@ -31,12 +31,13 @@
             width: 100%; 
             max-width: 450px; 
             background-color: var(--card-dark); 
-            border-radius: 32px; 
+            border-radius: 28px; 
             padding: 30px; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.05);
             margin-top: 20px;
             box-sizing: border-box;
+            text-align: center;
         }
 
         .header { 
@@ -49,25 +50,22 @@
         h1 { 
             font-size: 1.3rem; 
             margin: 0; 
-            background: linear-gradient(to right, #a55eea, #45aaf2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #9b59b6;
             font-weight: 800;
         }
 
-        .youtube-link { color: #ff0000; text-decoration: none; }
+        .youtube-icon { color: #ff0000; text-decoration: none; font-size: 1.5rem; }
 
-        .input-form { display: flex; flex-direction: column; gap: 15px; }
-        .input-group { text-align: left; }
-        .input-group label { font-size: 0.8rem; color: var(--text-dim); font-weight: bold; margin-bottom: 5px; display: block; }
+        .input-form { display: flex; flex-direction: column; gap: 20px; text-align: left; }
+        .input-group label { font-size: 0.75rem; color: var(--text-dim); font-weight: bold; display: block; margin-bottom: 8px; }
         
         input { 
             width: 100%; 
             padding: 16px; 
-            background: rgba(255,255,255,0.08); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 16px; 
-            color: #ffffff; 
+            background: #ffffff; 
+            border: none; 
+            border-radius: 12px; 
+            color: #000000; 
             font-size: 1rem; 
             box-sizing: border-box;
         }
@@ -75,38 +73,34 @@
         button { 
             padding: 18px; 
             border: none; 
-            border-radius: 16px; 
+            border-radius: 14px; 
             font-weight: 800; 
             cursor: pointer; 
             font-size: 1.1rem; 
             transition: 0.3s;
             width: 100%;
         }
-        .btn-main { 
-            background: linear-gradient(135deg, #6c5ce7, #a55eea); 
+
+        .btn-analyze { 
+            background: #9b59b6; 
             color: white; 
-            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
         }
 
-        #resultArea { display: none; margin-top: 25px; animation: fadeIn 0.5s ease; }
+        #resultArea { display: none; margin-top: 25px; text-align: left; }
         
         .fortune-card { 
             background: rgba(255,255,255,0.05); 
-            border-radius: 20px; 
+            border-radius: 18px; 
             padding: 20px; 
             margin-bottom: 15px; 
-            border: 1px solid rgba(255,255,255,0.08);
-            text-align: left;
+            border-left: 5px solid var(--primary-accent);
         }
         
-        .tag { font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; }
-        .tag-gen { background: rgba(69, 170, 242, 0.2); color: #45aaf2; }
-        .tag-inv { background: rgba(255, 71, 87, 0.2); color: var(--invest-red); }
-        .tag-lucky { background: rgba(255, 165, 2, 0.2); color: var(--lucky-gold); }
-        .tag-quote { background: rgba(165, 94, 234, 0.2); color: var(--quote-purple); }
+        .tag { font-size: 0.75rem; font-weight: 800; color: var(--text-dim); display: block; margin-bottom: 8px; }
 
-        .content { font-size: 1rem; line-height: 1.6; color: #e2e8f0; margin: 0; word-break: keep-all; }
+        .content { font-size: 1rem; line-height: 1.7; color: #e2e8f0; margin: 0; word-break: keep-all; }
         .quote-text { font-size: 1.2rem; font-weight: 800; color: #ffffff; text-align: center; }
         
         .lucky-num-ball { 
@@ -116,17 +110,17 @@
             margin: 10px auto; font-size: 1.8rem; font-weight: 900; color: #000;
         }
 
-        .btn-copy { background: #26de81; color: #004d2e; margin-top: 10px; }
+        .btn-copy { background: #26de81; color: #004d2e; margin-top: 15px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body onload="setDefaultDate()">
+<body onload="initApp()">
 
 <div class="container">
     <div class="header">
         <h1>🔮 노센스 투자운세 v1.1</h1>
-        <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="youtube-link">
+        <a href="https://www.youtube.com/@KnowSense_KR" target="_blank" class="youtube-icon">
             <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
     </div>
@@ -140,20 +134,40 @@
             <label>BIRTHDAY</label>
             <input type="date" id="userBirth">
         </div>
-        <button class="btn-main" onclick="calculateFortune()">운세 리포트 분석 시작</button>
+        <button class="btn-analyze" onclick="calculateFortune()">운세 리포트 분석 시작</button>
     </div>
 
     <div id="resultArea">
         <div class="fortune-card">
-            <span class="tag tag-gen">GENERAL</span>
+            <span class="tag">GENERAL</span>
             <p class="content" id="generalTxt"></p>
         </div>
-        <div class="fortune-card">
-            <span class="tag tag-inv">INVESTMENT</span>
+        <div class="fortune-card" style="border-left-color: var(--invest-red);">
+            <span class="tag">INVESTMENT</span>
             <p class="content" id="investTxt"></p>
         </div>
-        <div class="fortune-card">
-            <span class="tag tag-lucky">LUCKY NUMBER</span>
+        <div class="fortune-card" style="border-left-color: var(--lucky-gold);">
+            <span class="tag">LUCKY NUMBER</span>
             <div class="lucky-num-ball" id="luckyNum"></div>
         </div>
-        <div class="fortune-card" style="border-color: var(--quote-purple
+        <div class="fortune-card" style="border-left-color: var(--quote-purple); background: rgba(165, 94, 234, 0.1);">
+            <span class="tag">DAILY QUOTE</span>
+            <p class="content quote-text" id="quoteTxt"></p>
+        </div>
+        
+        <button class="btn-copy" onclick="copyToClipboard()">리포트 복사하기</button>
+        <button onclick="location.reload()" style="background: #334155; color: white; margin-top: 10px;">다시 분석</button>
+    </div>
+</div>
+
+<script>
+    function initApp() {
+        // 기본 연도를 1990년으로 설정
+        document.getElementById('userBirth').value = '1990-01-01';
+    }
+
+    const data = {
+        general: [
+            "주변 사람들과의 협력이 빛을 발하는 날입니다. 혼자 고민하던 문제를 신뢰할 만한 사람에게 털어놓으세요.",
+            "오늘은 정적인 활동보다 동적인 활동이 운을 높여줍니다. 새로운 정보를 수집하거나 활발히 움직이세요.",
+            "내면의 목소리에 집중해야 할 시기입니다
