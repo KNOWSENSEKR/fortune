@@ -3,71 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>노센스 투자운세 v1.3</title>
+    <title>노센스 투자운세 v1.4</title>
     <style>
+        /* 변수 설정 - 확실한 색상값 지정 */
         :root { 
-            --page-bg: #ffffff; /* 페이지 전체 배경은 하얀색 */
-            --app-bg: #0f172a; /* 앱 본체는 로또분석기 스타일의 다크 블루 */
-            --card-bg: rgba(255, 255, 255, 0.05); 
-            --primary-accent: #8b5cf6; 
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --invest-red: #ef4444;
-            --lucky-gold: #f59e0b;
-            --quote-purple: #a78bfa;
+            --page-bg: #ffffff;      /* 배경은 하얀색 */
+            --app-bg: #111827;       /* 앱 본체는 진한 남색 */
+            --card-bg: #1f2937;      /* 카드 배경 */
+            --accent: #8b5cf6;       /* 보라색 포인트 */
+            --text-main: #ffffff;    /* 앱 내부 글자 흰색 */
+            --text-dim: #9ca3af;     /* 흐린 글자 */
         }
         
         body { 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            background-color: var(--page-bg); 
+            background-color: var(--page-bg) !important; 
             margin: 0; padding: 20px; 
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; color: #1e293b;
+            display: flex; justify-content: center; align-items: flex-start;
+            min-height: 100vh;
         }
 
         .container { 
-            width: 100%; max-width: 440px; 
+            width: 100%; max-width: 420px; 
             background-color: var(--app-bg); 
-            border-radius: 32px; padding: 35px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2); 
-            text-align: center; box-sizing: border-box;
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px; padding: 30px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            box-sizing: border-box;
+            margin-top: 20px;
+            color: var(--text-main);
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        h1 { 
-            font-size: 1.35rem; margin: 0; 
-            background: linear-gradient(to right, #c084fc, #6366f1);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-weight: 800; 
-        }
-        .yt-icon { color: #ff0000; text-decoration: none; transition: 0.2s; }
-        .yt-icon:hover { transform: scale(1.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        h1 { font-size: 1.3rem; margin: 0; color: #c084fc; font-weight: 800; }
+        .yt-icon { color: #ff0000; text-decoration: none; }
 
-        /* 입력 폼 */
+        /* 입력창 스타일 */
         .input-form { display: flex; flex-direction: column; gap: 15px; text-align: left; }
-        .input-group label { font-size: 0.75rem; color: var(--text-dim); font-weight: 800; letter-spacing: 1px; margin-left: 5px; }
+        .input-group label { font-size: 0.75rem; color: var(--text-dim); font-weight: 800; margin-bottom: 5px; display: block; }
         input { 
-            width: 100%; padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.07); color: #fff; font-size: 1rem; box-sizing: border-box;
+            width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #374151;
+            background: #f9fafb; color: #000; font-size: 1rem; box-sizing: border-box;
         }
-        input:focus { outline: none; border-color: var(--primary-accent); background: rgba(255,255,255,0.12); }
 
         .btn-analyze { 
             background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; border: none;
-            padding: 18px; border-radius: 16px; font-weight: 800; font-size: 1.1rem;
-            cursor: pointer; margin-top: 10px; width: 100%; 
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
-        .btn-analyze:hover { transform: translateY(-2px); }
-
-        /* 결과 리포트 카드 */
-        #resultArea { display: none; margin-top: 20px; text-align: left; animation: fadeIn 0.5s ease; }
-        .fortune-card { 
-            background: var(--card-bg); border-radius: 22px; 
-            padding: 22px; margin-bottom: 18px; 
-            border: 1px solid rgba(255,255,255,0.08);
-            border-left: 6px solid var(--primary-accent);
-        }
-        
-        .tag { font-size: 0.8rem; font-weight: 900; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-bottom: 12px; letter
+            padding: 18px; border-radius: 15px; font-weight: 800; font-size: 1.1rem;
+            cursor: pointer; margin-top: 1
